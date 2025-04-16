@@ -3,11 +3,11 @@ import { CountryListComponent } from "../../components/country-list/country-list
 import { SearchInputComponent } from "../../components/search-input/search-input.component";
 
 @Component({
-  selector: 'app-by-capital-page',
+  selector: 'app-by-country-page',
   imports: [CountryListComponent, SearchInputComponent],
-  templateUrl: './by-capital-page.component.html',
+  templateUrl: './by-country-page.component.html',
 })
-export class ByCapitalPageComponent {
+export class ByCountryPageComponent {
 
   onSearch(value: string){
 
