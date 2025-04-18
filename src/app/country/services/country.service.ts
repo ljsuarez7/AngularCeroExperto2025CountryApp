@@ -46,4 +46,21 @@ export class CountryService {
 
   }
 
+  searchCountryByAlphaCode(code: string){
+
+    const url = `${API_URL}/alpha/${code}`;
+
+    return this.http.get<RESTCountry[]>(url)
+      .pipe(
+        map(countries => CountryMapper.mapRestCountryArrayToCountryArray(countries)),
+        map(countries => countries.at(0)),
+        // delay(2000), //Esto es para que espere 3 segundos a hacer la petición. En este caso lo hemos puesto para probar el estado loading
+        catchError(error => {
+          console.log({error});
+          return throwError(() => new Error(`No se pudo obtener países con ese código: ${code}`));
+        })
+      );
+
+  }
+
 }
