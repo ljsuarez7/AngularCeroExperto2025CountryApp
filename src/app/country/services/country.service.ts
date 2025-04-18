@@ -13,7 +13,9 @@ const API_URL = 'https://restcountries.com/v3.1';
 export class CountryService {
 
   private http = inject(HttpClient);
+
   private queryCacheCapital = new Map<string, Country[]>();
+  private queryCacheCountry = new Map<string, Country[]>();
 
   searchByCapital(query: string): Observable<Country[]>{
 
@@ -38,12 +40,18 @@ export class CountryService {
   searchByCountry(query: string): Observable<Country[]>{
 
     const url = `${API_URL}/name/${query}`;
+
     query = query.toLowerCase();
+
+    if(this.queryCacheCountry.has(query)){
+      return of(this.queryCacheCountry.get(query) ?? []);
+    }
 
     return this.http.get<RESTCountry[]>(url)
       .pipe(
-        map(countries => CountryMapper.mapRestCountryArrayToCountryArray(countries)),
-        // delay(2000), //Esto es para que espere 3 segundos a hacer la petición. En este caso lo hemos puesto para probar el estado loading
+        map(resp => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
+        tap(countries => this.queryCacheCountry.set(query, countries)),
+        delay(2000), //Esto es para que espere X segundos a hacer la petición. En este caso lo hemos puesto para probar el estado loading
         catchError(error => {
           console.log({error});
           return throwError(() => new Error(`No se pudo obtener países con ese query: ${query}`));
