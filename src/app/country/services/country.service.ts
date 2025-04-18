@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import type { RESTCountry } from '../interfaces/rest-countries.interface';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, delay, map, Observable, throwError } from 'rxjs';
 import type { Country } from '../interfaces/country.interface';
 import { CountryMapper } from '../mappers/country.mapper';
 
@@ -37,6 +37,7 @@ export class CountryService {
     return this.http.get<RESTCountry[]>(url)
       .pipe(
         map(countries => CountryMapper.mapRestCountryArrayToCountryArray(countries)),
+        // delay(2000), //Esto es para que espere 3 segundos a hacer la petición. En este caso lo hemos puesto para probar el estado loading
         catchError(error => {
           console.log({error});
           return throwError(() => new Error(`No se pudo obtener países con ese query: ${query}`));

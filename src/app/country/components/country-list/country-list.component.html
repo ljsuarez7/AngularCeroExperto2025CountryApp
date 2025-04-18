@@ -12,6 +12,7 @@
       </tr>
     </thead>
     <tbody>
+
       @for (country of countries(); track country.cca2; let index = $index) {
 
         <tr>
@@ -33,6 +34,31 @@
         </tr>
 
       }
+
+      @if (errorMessage()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            {{errorMessage()}}
+          </td>
+        </tr>
+      }
+
+      @if (countries().length === 0 && !isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            No se encontraron resultados
+          </td>
+        </tr>
+      }
+
+      @if (isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            Buscando...
+          </td>
+        </tr>
+      }
+
     </tbody>
   </table>
 </section>
