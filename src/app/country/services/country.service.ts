@@ -87,9 +87,6 @@ export class CountryService {
       return of(this.queryCacheRegion.get(region) ?? []);
     }
 
-    console.log('sdfsdfsdffd');
-
-
     return this.http.get<RESTCountry[]>(url)
       .pipe(
         map(resp => CountryMapper.mapRestCountryArrayToCountryArray(resp)),
